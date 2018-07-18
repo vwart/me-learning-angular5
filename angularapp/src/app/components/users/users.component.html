@@ -1,0 +1,17 @@
+<h2>Users</h2>
+<ul *ngIf="users?.length > 0" class="list-unstyled">
+<!-- <ul *ngIf="users.length > 0; else noUsers"> -->
+  <li *ngFor="let user of users" class="card card-body mb-2">
+    {{user.firstName}}
+    <ul *ngIf="showExtended && (user.age || user.gender)"
+      class="list-group">
+      <li *ngIf="user.age" class="list-group-item"><em>Age: {{user.age}}</em></li>
+      <li *ngIf="user.gender" class="list-group-item">Gender: {{user.gender}}</li>
+    </ul>
+  </li>
+</ul>
+
+<!-- <ng-template #noUsers><h4>No users found</h4></ng-template> -->
+<h4 *ngIf="users?.length == 0">No users found</h4>
+
+<h4 *ngIf="!loaded">Loading users...</h4>
