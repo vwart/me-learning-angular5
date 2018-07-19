@@ -9,7 +9,6 @@ import { User } from '../../models/User';
 export class UsersComponent implements OnInit {
 
   users: User[];
-  showExtended: boolean;
   loaded: boolean;
   enabledAdd: boolean;
   currentClasses?: {};
@@ -20,7 +19,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
       this.enabledAdd = true;
-      this.showExtended = true;
       this.loaded = false;
       setTimeout(() => {
         this.users = [
@@ -29,33 +27,47 @@ export class UsersComponent implements OnInit {
                 lastName: 'Brady',
                 age: 30,
                 gender: "male",
-                isActive: true
+                isActive: true,
+                image: "https://randomuser.me/api/portraits/men/78.jpg",
+                balance: 910,
+                registered: new Date("03-04-2003"),
+                showExtended: false
             },
             {
                 firstName: 'Kevin',
                 lastName: 'James',
                 age: 24,
                 gender: "male",
-                image: "http://lorempixel.com/200/200/people/3",
-                isActive: true
+                image: "https://randomuser.me/api/portraits/women/32.jpg",
+                isActive: true,
+                balance: 4016,
+                registered: new Date("09/08/1998"),
+                showExtended: false
             },
             {
                 firstName: 'Bruce',
                 lastName: 'Lee',
                 gender: "male",
-                isActive: false
+                isActive: false,
+                image: "https://randomuser.me/api/portraits/men/23.jpg",
+                balance: 103087,
+                registered: new Date("07/14/1974"),
+                showExtended: false
             },
             {
                 firstName: 'Bryan',
                 lastName: 'Müller',
                 age: 17,
                 gender: "male",
-                image: "http://lorempixel.com/200/200/people/1",
-                isActive: true    
+                image: "https://randomuser.me/api/portraits/men/70.jpg",
+                isActive: true,
+                balance: 51,
+                registered: new Date("01/01/2017"),
+                showExtended: false
             }
         ];
-        this.loaded = true;
         this.setCurrentClasses();
+        this.loaded = true;
       }, 1337);
   }
 
@@ -63,10 +75,19 @@ export class UsersComponent implements OnInit {
     this.users.push(user);
   }
 
-  setCurrentClasses() {
-      this.currentClasses = {
-          'btn-success': this.enabledAdd,
-          'big-text': this.showExtended
-      }
+  toggleExtend(user: User) {
+    user.showExtended = !user.showExtended;
   }
+
+    setCurrentClasses() {
+        this.currentClasses = {
+            'btn-success': this.enabledAdd
+        }
+    }
+    currentStyles(user: User) {
+        return {
+            'padding-top': user.showExtended ? '0' : '32px',
+            'font-size': user.showExtended ? '' : '40px'
+        }
+    }
 }

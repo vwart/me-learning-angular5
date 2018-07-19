@@ -4,5 +4,8 @@ export interface User {
     age?: number,
     gender?: "male" | "female",
     image?: string,
-    isActive?: boolean
+    isActive?: boolean,
+    balance?: number,
+    registered?: any,
+    showExtended?: boolean
 }

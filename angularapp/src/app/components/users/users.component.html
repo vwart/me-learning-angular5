@@ -1,20 +1,28 @@
 <h2>Users</h2>
-<button [disabled]="!enabledAdd" class="btn btn-block mb-3" [ngClass]="currentClasses">Add User</button>
+<button (click)="addUser({firstName:'Mary', lastName:'Jackson'})" [disabled]="!enabledAdd" class="btn btn-block mb-3" [ngClass]="currentClasses">Add User</button>
 <ul *ngIf="users?.length > 0" class="list-unstyled">
-<!-- <ul *ngIf="users.length > 0; else noUsers"> -->
-  <li *ngFor="let user of users" class="card card-body mb-2" [class.bg-light]="user.isActive">
+  <!-- <ul *ngIf="users.length > 0; else noUsers"> -->
+  <li *ngFor="let user of users" class="card card-body mb-2" [class.bg-light]="user.isActive" [style.border-color]="user.isActive ? 'green' : ''">
     <div class="row">
       <div class="col-sm-4">
-          <img *ngIf="user.image" class="img-fluid" [src]="user.image" alt="">
-          <!-- <img *ngIf="user.image" class="img-fluid" bind-src="user.image" alt=""> -->
+        <img *ngIf="user.image" class="img-fluid" [src]="user.image" alt="">
+        <!-- <img *ngIf="user.image" class="img-fluid" bind-src="user.image" alt=""> -->
       </div>
       <div class="col-sm-8">
-          {{user.firstName}}
-          <ul *ngIf="showExtended && (user.age || user.gender)"
-            class="list-group">
-            <li *ngIf="user.age" class="list-group-item"><em>Age: {{user.age}}</em></li>
-            <li *ngIf="user.gender" class="list-group-item">Gender: {{user.gender}}</li>
-          </ul>
+        <div [ngStyle]="currentStyles(user)">{{user.firstName | uppercase}} {{user.lastName}}</div>
+        <small>
+          <button (click)="toggleExtend(user)" class="btn btn-dark btn-sm">
+            <i [class]="user.showExtended ? 'fa fa-minus' : 'fa fa-plus'" ></i>
+          </button>
+        </small>
+        <ul *ngIf="user.showExtended && (user.age || user.gender)" class="list-group mt-2">
+          <li *ngIf="user.age" class="list-group-item">
+            <em>Age: {{user.age}}</em>
+          </li>
+          <li *ngIf="user.gender" class="list-group-item">Gender: {{user.gender}}</li>
+          <li *ngIf="user.balance" class="list-group-item">Balance: {{user.balance | currency:"EUR"}}</li>
+          <li *ngIf="user.registered" class="list-group-item">Registered: {{user.registered | date:"dd.MM.yyyy"}}</li>
+        </ul>
       </div>
     </div>
   </li>
