@@ -1,5 +1,32 @@
+<button (click)="showUserForm = !showUserForm" class="btn btn-dark mb-3">Add User</button>
 <h2>Users</h2>
-<button (click)="addUser({firstName:'Mary', lastName:'Jackson'})" [disabled]="!enabledAdd" class="btn btn-block mb-3" [ngClass]="currentClasses">Add User</button>
+<div *ngIf="showUserForm">
+  <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" class="form-control" 
+      [(ngModel)]="user.firstName" name="firstName"
+      [ngClass]="{'is-invalid': userFirstName.errors && userFirstName.touched}"
+      #userFirstName="ngModel"
+      required minlength="2">
+      <div class="invalid-feedback">Firstname required</div>
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" class="form-control" [(ngModel)]="user.lastName" name="lastName">
+    </div>
+    <div class="form-group">
+      <label>E-Mail Address</label>
+      <input type="email" class="form-control" [(ngModel)]="user.email" name="email">
+    </div>
+    <div class="form-group">
+      <label>Age</label>
+      <input type="number" class="form-control" [(ngModel)]="user.age" name="age">
+    </div>
+    <button [disabled]="!enabledAdd || !userForm.form.valid" class="btn btn-block mb-3"
+      [ngClass]="currentClasses">Add User</button>
+  </form>
+</div>
 <ul *ngIf="users?.length > 0" class="list-unstyled">
   <!-- <ul *ngIf="users.length > 0; else noUsers"> -->
   <li *ngFor="let user of users" class="card card-body mb-2" [class.bg-light]="user.isActive" [style.border-color]="user.isActive ? 'green' : ''">
@@ -10,9 +37,10 @@
       </div>
       <div class="col-sm-8">
         <div [ngStyle]="currentStyles(user)">{{user.firstName | uppercase}} {{user.lastName}}</div>
+        <div>{{user.email | uppercase}}</div>
         <small>
           <button (click)="toggleExtend(user)" class="btn btn-dark btn-sm">
-            <i [class]="user.showExtended ? 'fa fa-minus' : 'fa fa-plus'" ></i>
+            <i [class]="user.showExtended ? 'fa fa-minus' : 'fa fa-plus'"></i>
           </button>
         </small>
         <ul *ngIf="user.showExtended && (user.age || user.gender)" class="list-group mt-2">
